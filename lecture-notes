@@ -1,0 +1,2 @@
+Q1: Why we use softmax in final layer?
+Ans:  Because it has two nice properities i) Each value range between 0 and 1. ii) All the values sumup to one. 
