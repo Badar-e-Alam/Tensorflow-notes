@@ -4,7 +4,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']="2"
 
 import tensorflow  as tf
 from tensorflow import keras
-from tensorflow.keras import layers
+from tensorflow.keras import layers,regularizers
 from tensorflow.keras.datasets import cifar10 
 
 
@@ -19,13 +19,15 @@ x_test=x_test.astype("float32")/255.0
 
 model=keras.Sequential()
 model.add(layers.Input(shape=(32,32,3)))
-model.add(layers.Conv2D(32,3,padding="valid",activation="relu"))
+model.add(layers.Conv2D(32,3,padding="valid",activation="relu",kernel_regularizer=regularizers.l2(0.01)))
+model.add(layers.BatchNormalization())
 model.add(layers.MaxPooling2D())
-model.add(layers.Conv2D(64,3,activation="relu"))
+model.add(layers.Conv2D(64,3,activation="relu",padding="same",kernel_regularizer=regularizers.l2(0.01)))
 model.add(layers.MaxPooling2D())
 model.add(layers.Conv2D(128,3,activation="relu"))
 model.add(layers.Flatten())
-model.add(layers.Dense(64,activation="relu"))
+model.add(layers.Dropout(0.50))
+model.add(layers.Dense(64,activation="relu",kernel_regularizer=regularizers.l2(0.01)))
 model.add(layers.Dense(10))
 model.summary()
 
